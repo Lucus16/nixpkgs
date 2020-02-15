@@ -175,7 +175,7 @@ in stdenv.mkDerivation rec {
       { name, bazelScript, workspaceDir, bazelPkg, buildInputs ? [ ] }:
       let be = extracted bazelPkg;
       in runLocal name { inherit buildInputs; } (
-      # skip extraction caching on Darwin, because nobody knows how Darwin works
+        # skip extraction caching on Darwin, because nobody knows how Darwin works
         (lib.optionalString (!stdenv.hostPlatform.isDarwin) ''
           # set up home with pre-unpacked bazel
           export HOME=$(mktemp -d)

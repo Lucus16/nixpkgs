@@ -366,7 +366,7 @@ in stdenv.mkDerivation {
     ''
 
     + (
-    # fixup .pc file (where to find 'moc' etc.)
+      # fixup .pc file (where to find 'moc' etc.)
       ''
         sed -i "$dev/lib/pkgconfig/Qt5Core.pc" \
             -e "/^host_bins=/ c host_bins=$dev/bin"

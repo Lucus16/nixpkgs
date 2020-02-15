@@ -683,7 +683,7 @@ in {
     systemd.targets."multi-user".wants = [ "machines.target" ];
 
     systemd.services = listToAttrs (filter (x: x.value != null) (
-    # The generic container template used by imperative containers
+      # The generic container template used by imperative containers
       [{
         name = "container@";
         value = unit;

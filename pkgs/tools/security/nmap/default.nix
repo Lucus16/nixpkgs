@@ -24,10 +24,10 @@ in stdenv.mkDerivation rec {
 
   patches = [ ./zenmap.patch ] ++ optionals stdenv.cc.isClang [
     (
-    # Fixes a compile error due an ambiguous reference to bind(2) in
-    # nping/EchoServer.cc, which is otherwise resolved to std::bind.
-    # Also fixes a missing include.
-    # https://github.com/nmap/nmap/pull/1363
+      # Fixes a compile error due an ambiguous reference to bind(2) in
+      # nping/EchoServer.cc, which is otherwise resolved to std::bind.
+      # Also fixes a missing include.
+      # https://github.com/nmap/nmap/pull/1363
       fetchpatch {
         url =
           "https://github.com/nmap/nmap/commit/5bbe66f1bd8cbd3718f5805139e2e8139e6849bb.diff";

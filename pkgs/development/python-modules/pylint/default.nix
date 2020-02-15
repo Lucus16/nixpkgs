@@ -26,7 +26,7 @@ buildPythonPackage rec {
   checkPhase = ''
     pytest pylint/test -k "not ${
       lib.concatStringsSep " and not " (
-      # Broken tests
+        # Broken tests
         [ "member_checks_py37" "iterable_context_py36" ] ++
         # Disable broken darwin tests
         lib.optionals stdenv.isDarwin [

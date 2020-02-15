@@ -139,7 +139,7 @@ in buildEnv {
     (let
       pnames = uniqueStrings (map (p: p.pname) pkgList.splitBin.wrong);
       script = writeText "hyphens.sed" (
-      # pick up the header
+        # pick up the header
         "1,/^% from/p;"
         # pick up all sections matching packages that we combine
         + lib.concatMapStrings (pname: ''

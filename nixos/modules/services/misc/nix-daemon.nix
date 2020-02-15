@@ -505,7 +505,7 @@ in {
     nix.systemFeatures = mkDefault
       ([ "nixos-test" "benchmark" "big-parallel" "kvm" ] ++ optionals
         (pkgs.stdenv.isx86_64 && pkgs.hostPlatform.platform ? gcc.arch) (
-        # a x86_64 builder can run code for `platform.gcc.arch` and minor architectures:
+          # a x86_64 builder can run code for `platform.gcc.arch` and minor architectures:
           [ "gccarch-${pkgs.hostPlatform.platform.gcc.arch}" ] ++ {
             "sandybridge" = [ "gccarch-westmere" ];
             "ivybridge" = [ "gccarch-westmere" "gccarch-sandybridge" ];

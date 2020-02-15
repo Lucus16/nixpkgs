@@ -59,7 +59,7 @@ in stdenv.mkDerivation rec {
     ++ lib.optionals stdenv.isDarwin [ Accelerate CoreGraphics CoreVideo ];
 
   propagatedBuildInputs = lib.optionals pythonSupport (
-  # requirements.txt
+    # requirements.txt
     let pp = python.pkgs;
     in ([
       pp.numpy

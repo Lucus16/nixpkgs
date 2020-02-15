@@ -15,7 +15,7 @@ rec {
   cleanSourceFilter = name: type:
     let baseName = baseNameOf (toString name);
     in !(
-    # Filter out version control software files/directories
+      # Filter out version control software files/directories
       (baseName == ".git" || type == "directory"
         && (baseName == ".svn" || baseName == "CVS" || baseName == ".hg")) ||
       # Filter out editor backup / swap files.

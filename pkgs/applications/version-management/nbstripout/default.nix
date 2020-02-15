@@ -24,11 +24,11 @@ buildPythonApplication rec {
 
   patches = [
     (
-    # Fix git diff tests by using --no-index.
-    # See: https://github.com/kynan/nbstripout/issues/74
-    #
-    # Remove this patch once the pull request has been merged and a new
-    # release made.
+      # Fix git diff tests by using --no-index.
+      # See: https://github.com/kynan/nbstripout/issues/74
+      #
+      # Remove this patch once the pull request has been merged and a new
+      # release made.
       fetchurl {
         url =
           "https://github.com/jluttine/nbstripout/commit/03e28424fb788dd09a95e99814977b0d0846c0b4.patch";

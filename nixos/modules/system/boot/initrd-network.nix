@@ -90,7 +90,7 @@ in {
     '';
 
     boot.initrd.preLVMCommands = mkBefore (
-    # Search for interface definitions in command line.
+      # Search for interface definitions in command line.
       ''
         for o in $(cat /proc/cmdline); do
           case $o in

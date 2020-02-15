@@ -257,7 +257,7 @@ let
       '';
 
       robotsTxt = concatStringsSep "\n" (filter (x: x != "") (
-      # If this is a vhost, the include the entries for the main server as well.
+        # If this is a vhost, the include the entries for the main server as well.
         (if isMainServer then
           [ ]
         else
