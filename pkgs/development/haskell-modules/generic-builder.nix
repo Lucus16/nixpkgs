@@ -120,13 +120,6 @@ let
 
   binDir = if enableSeparateBinOutput then "$bin/bin" else "$out/bin";
 
-  newCabalFileUrl = "mirror://hackage/${pname}-${version}/revision/${revision}.cabal";
-  newCabalFile = fetchurl {
-    url = newCabalFileUrl;
-    sha256 = editedCabalFile;
-    name = "${pname}-${version}-r${revision}.cabal";
-  };
-
   defaultSetupHs = builtins.toFile "Setup.hs" ''
                      import Distribution.Simple
                      main = defaultMain
@@ -310,10 +303,7 @@ stdenv.mkDerivation ({
 
   LANG = "en_US.UTF-8";         # GHC needs the locale configured during the Haddock phase.
 
-  prePatch = optionalString (editedCabalFile != null) ''
-    echo "Replace Cabal file with edited version from ${newCabalFileUrl}."
-    cp ${newCabalFile} ${pname}.cabal
-  '' + prePatch;
+  inherit prePatch;
 
   postPatch = optionalString jailbreak ''
     echo "Run jailbreak-cabal to lift version restrictions on build inputs."
