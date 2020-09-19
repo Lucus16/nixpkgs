@@ -6,7 +6,7 @@
 , libuvVersion
 , libuvSha256
 }:
-{ stdenv, fetchurl, fetchzip
+{ stdenv, fetchpatch, fetchurl, fetchzip
 # build tools
 , gfortran, m4, makeWrapper, patchelf, perl, which, python2
 , cmake
@@ -90,6 +90,7 @@ stdenv.mkDerivation rec {
 
   patches = [
     ./0001.1-use-system-utf8proc.patch
+    ./0002-Use-approximate-comparisons-for-diagonal-tests.patch
 
     # Julia recompiles a precompiled file if the mtime stored *in* the
     # .ji file differs from the mtime of the .ji file.  This
