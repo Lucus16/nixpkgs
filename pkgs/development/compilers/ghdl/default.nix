@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, gnat, zlib, llvm, lib
+{ stdenv, fetchFromGitHub, makeWrapper, callPackage, gnat, zlib, binutils, llvm, lib
 , backend ? "mcode" }:
 
 assert backend == "mcode" || backend == "llvm";
@@ -16,7 +16,9 @@ stdenv.mkDerivation rec {
 
   LIBRARY_PATH = "${stdenv.cc.libc}/lib";
 
+  nativeBuildInputs = [ makeWrapper  ];
   buildInputs = [ gnat zlib ];
+  propagatedBuildInputs = [ zlib ];
 
   preConfigure = ''
     # If llvm 7.0 works, 7.x releases should work too.
@@ -29,6 +31,30 @@ stdenv.mkDerivation rec {
   hardeningDisable = [ "format" ];
 
   enableParallelBuilding = true;
+
+  # for LLVM backend: wrap it in the default builder; this may be overkill,
+  # but ensures linking against zlib works at runtime
+  postInstall = lib.optional (backend == "llvm") ''
+    wrapProgram $out/bin/ghdl \
+      --run "ghdl_wrapped=$out/bin/.ghdl-wrapped" \
+      --run 'export buildCommand="$ghdl_wrapped $@"' \
+      --run "export nativeBuildInputs=$out" \
+      --run 'export out=$(pwd)' \
+      --run "export stdenv=$stdenv" \
+      --run 'export NIX_BUILD_TOP="$XDG_RUNTIME_DIR"' \
+      --run 'export NIX_STORE=$(echo "$stdenv" | sed "s+\(.*\)/[^/]*-stdenv-linux$+\1+")'
+
+    sed -i 's+^exec.*ghdl-wrapped.*$+exec -a "$0" bash -e /nix/store/9krlzvny65gdc8s7kpb6lkx8cd02c25b-default-builder.sh+' $out/bin/ghdl
+  '';
+
+  passthru = {
+    # run with either of
+    # nix-build -A ghdl-mcode.passthru.tests
+    # nix-build -A ghdl-llvm.passthru.tests
+    tests = {
+      simple = callPackage ./test-simple.nix { inherit backend; };
+    };
+  };
 
   meta = with lib; {
     homepage = "https://github.com/ghdl/ghdl";
